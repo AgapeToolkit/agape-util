@@ -4,7 +4,7 @@
  * Creates a new object by omitting specified properties from the original object.
  *
  * This function returns a new object that contains all properties from the original
- * object except for the ones specified in the `keys` parameter.
+ * object except for the ones specified in the `<parameter>keys` parameter.
  *
  * @template T - The type of the input object
  * @template K - The keys to omit from the object
@@ -13,7 +13,6 @@
  * @returns A new object with the specified properties omitted
  *
  * @example
- *
  * ### Omit a single property
  *
  * ```typescript
@@ -22,7 +21,7 @@
  * const publicUser = omit(user, ['password']);
  * // Result: { id: 1, name: 'John', email: 'john@example.com' }
  * ```
- *
+ * @example
  * ### Omit multiple properties
  * ```ts
  * const user = { id: 1, name: 'John', email: 'john@example.com', password: 'secret' };
@@ -30,7 +29,7 @@
  * const basicUser = omit(user, ['password', 'email']);
  * // Result: { id: 1, name: 'John' }
  * ```
- *
+ * @example
  * ### Omit all methods from an object
  * ```ts
  * const employee = {
@@ -42,6 +41,20 @@
  *
  * const dataOnly = omit(employee, methods(employee));
  * // Result: { id: 1, name: 'John' }
+ * ```
+ *
+ * @example
+ * ### Omit primary key and methods
+ * ```ts
+ * const employee = {
+ *   id: 1,
+ *   name: 'John',
+ *   getFullName() { return this.name; },
+ *   calculateSalary() { return 50000; }
+ * };
+ *
+ * const dataOnly = omit(employee, ['id', ...methods(employee)]);
+ * // Result: { name: 'John' }
  * ```
  */
 export function omit<T extends object, K extends keyof T>(instance: T, keys: K[]): Omit<T, K> {
@@ -61,7 +74,7 @@ export function omit<T extends object, K extends keyof T>(instance: T, keys: K[]
  * Creates a new object by picking only the specified properties from the original object.
  *
  * This function returns a new object that contains only the properties specified
- * in the `keys` parameter from the original object.
+ * in the `<parameter>keys` parameter from the original object.
  *
  * @template T - The type of the input object
  * @template K - The keys to pick from the object
@@ -85,6 +98,20 @@ export function omit<T extends object, K extends keyof T>(instance: T, keys: K[]
  *
  * const publicInfo = pick(user, ['id', 'name', 'email']);
  * // Result: { id: 1, name: 'John', email: 'john@example.com' }
+ * ```
+ *
+ * @example
+ * ### Pick all properties
+ * ```ts
+ * const employee = {
+ *   id: 1,
+ *   name: 'John',
+ *   getFullName() { return this.name; },
+ *   calculateSalary() { return 50000; }
+ * };
+ *
+ * const dataOnly = pick(employee, properties(employee)]);
+ * // Result: { id: 1, name: 'John' }
  * ```
  */
 export function pick<T extends object, K extends keyof T>(instance: T, keys: K[]): Pick<T, K> {
