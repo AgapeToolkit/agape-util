@@ -71,7 +71,7 @@ const dataProps = properties(employee);
 const methodProps = methods(employee);
 // Result: ['getFullName', 'calculateSalary', 'getDepartment']
 
-// Omit all methods to get data-only object
+// Omit all methods and ids to get data-only object
 const dataOnly = omit(employee, ['id', ...methods(employee)]);
 // Result: { id: 1, name: 'John', department: 'Engineering' }
 
