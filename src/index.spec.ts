@@ -1,4 +1,4 @@
-import { isEmpty, omit, pick } from './index';
+import { isEmpty, omit, pick, properties, methods } from './index';
 
 describe('isEmpty', () => {
   it('should return true for undefined', () => {
@@ -237,5 +237,162 @@ describe('TypeScript type safety', () => {
     expect(omitted).not.toHaveProperty('password');
     expect(picked).toHaveProperty('id');
     expect(picked).toHaveProperty('name');
+  });
+});
+
+describe('properties', () => {
+  it('should return only non-function properties', () => {
+    const obj = {
+      id: 1,
+      name: 'John',
+      getFullName() { return this.name; },
+      calculateSalary() { return 50000; },
+      age: 30
+    };
+    
+    const result = properties(obj);
+    expect(result).toEqual(['id', 'name', 'age']);
+  });
+
+  it('should return empty array for object with only methods', () => {
+    const obj = {
+      method1() { return 'test'; },
+      method2() { return 42; }
+    };
+    
+    const result = properties(obj);
+    expect(result).toEqual([]);
+  });
+
+  it('should return all properties for object with no methods', () => {
+    const obj = {
+      id: 1,
+      name: 'John',
+      age: 30
+    };
+    
+    const result = properties(obj);
+    expect(result).toEqual(['id', 'name', 'age']);
+  });
+
+  it('should handle empty object', () => {
+    const result = properties({});
+    expect(result).toEqual([]);
+  });
+
+  it('should handle object with mixed property types', () => {
+    const obj = {
+      string: 'hello',
+      number: 42,
+      boolean: true,
+      array: [1, 2, 3],
+      object: { nested: true },
+      null: null,
+      undefined: undefined,
+      method() { return 'test'; },
+      arrow: () => 'arrow'
+    };
+    
+    const result = properties(obj);
+    expect(result).toEqual(['string', 'number', 'boolean', 'array', 'object', 'null', 'undefined']);
+  });
+});
+
+describe('methods', () => {
+  it('should return only function properties', () => {
+    const obj = {
+      id: 1,
+      name: 'John',
+      getFullName() { return this.name; },
+      calculateSalary() { return 50000; },
+      age: 30
+    };
+    
+    const result = methods(obj);
+    expect(result).toEqual(['getFullName', 'calculateSalary']);
+  });
+
+  it('should return empty array for object with no methods', () => {
+    const obj = {
+      id: 1,
+      name: 'John',
+      age: 30
+    };
+    
+    const result = methods(obj);
+    expect(result).toEqual([]);
+  });
+
+  it('should return all methods for object with only methods', () => {
+    const obj = {
+      method1() { return 'test'; },
+      method2() { return 42; }
+    };
+    
+    const result = methods(obj);
+    expect(result).toEqual(['method1', 'method2']);
+  });
+
+  it('should handle empty object', () => {
+    const result = methods({});
+    expect(result).toEqual([]);
+  });
+
+  it('should handle arrow functions', () => {
+    const obj = {
+      id: 1,
+      regularMethod() { return 'regular'; },
+      arrowMethod: () => 'arrow',
+      notAFunction: 'string'
+    };
+    
+    const result = methods(obj);
+    expect(result).toEqual(['regularMethod', 'arrowMethod']);
+  });
+});
+
+describe('Integration with omit and pick', () => {
+  const employee = {
+    id: 1,
+    name: 'John',
+    department: 'Engineering',
+    getFullName() { return this.name; },
+    calculateSalary() { return 50000; },
+    getDepartment() { return this.department; }
+  };
+
+  it('should omit all methods using methods() function', () => {
+    const dataOnly = omit(employee, methods(employee));
+    expect(dataOnly).toEqual({
+      id: 1,
+      name: 'John',
+      department: 'Engineering'
+    });
+  });
+
+  it('should pick only data properties using properties() function', () => {
+    const dataOnly = pick(employee, properties(employee));
+    expect(dataOnly).toEqual({
+      id: 1,
+      name: 'John',
+      department: 'Engineering'
+    });
+  });
+
+  it('should combine specific keys with methods()', () => {
+    const result = omit(employee, ['id', ...methods(employee)]);
+    expect(result).toEqual({
+      name: 'John',
+      department: 'Engineering'
+    });
+  });
+
+  it('should combine specific keys with properties()', () => {
+    const result = pick(employee, ['name', ...properties(employee)]);
+    expect(result).toEqual({
+      id: 1,
+      name: 'John',
+      department: 'Engineering'
+    });
   });
 });

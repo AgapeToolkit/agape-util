@@ -56,6 +56,19 @@ export function isEmpty(value: any) {
  * const basicUser = omit(user, ['password', 'email']);
  * // Result: { id: 1, name: 'John' }
  * ```
+ * 
+ * ### Omit all methods from an object
+ * ```ts
+ * const employee = {
+ *   id: 1,
+ *   name: 'John',
+ *   getFullName() { return this.name; },
+ *   calculateSalary() { return 50000; }
+ * };
+ * 
+ * const dataOnly = omit(employee, methods(employee));
+ * // Result: { id: 1, name: 'John' }
+ * ```
  */
 export function omit<T extends object, K extends keyof T>(instance: T, keys: K[]): Omit<T, K> {
   // Create Set for O(1) lookups when checking against all object properties
@@ -111,4 +124,74 @@ export function pick<T extends object, K extends keyof T>(instance: T, keys: K[]
     }
   }
   return output;
+}
+
+/**
+ * Returns an array of property names that are not functions or methods.
+ * 
+ * This function iterates through all enumerable properties of an object
+ * and returns only those that are not functions.
+ * 
+ * @template T - The type of the input object
+ * @param instance - The object to extract property names from
+ * @returns An array of property names that are not functions
+ * 
+ * @example
+ * ```typescript
+ * const employee = {
+ *   id: 1,
+ *   name: 'John',
+ *   getFullName() { return this.name; },
+ *   calculateSalary() { return 50000; }
+ * };
+ * 
+ * const dataProps = properties(employee);
+ * // Result: ['id', 'name']
+ * ```
+ */
+export function properties<T extends object>(instance: T): (keyof T)[] {
+  const result: (keyof T)[] = [];
+  
+  for (const key in instance) {
+    if (typeof instance[key] !== 'function') {
+      result.push(key);
+    }
+  }
+  
+  return result;
+}
+
+/**
+ * Returns an array of property names that are functions or methods.
+ * 
+ * This function iterates through all enumerable properties of an object
+ * and returns only those that are functions.
+ * 
+ * @template T - The type of the input object
+ * @param instance - The object to extract method names from
+ * @returns An array of property names that are functions
+ * 
+ * @example
+ * ```typescript
+ * const employee = {
+ *   id: 1,
+ *   name: 'John',
+ *   getFullName() { return this.name; },
+ *   calculateSalary() { return 50000; }
+ * };
+ * 
+ * const methodProps = methods(employee);
+ * // Result: ['getFullName', 'calculateSalary']
+ * ```
+ */
+export function methods<T extends object>(instance: T): (keyof T)[] {
+  const result: (keyof T)[] = [];
+  
+  for (const key in instance) {
+    if (typeof instance[key] === 'function') {
+      result.push(key);
+    }
+  }
+  
+  return result;
 }
