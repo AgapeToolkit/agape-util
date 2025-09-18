@@ -1,6 +1,6 @@
 {
   "name": "@agape/util",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "util management utilities with global state",
   "main": "./cjs/index.js",
   "module": "./es2020/index.js",
@@ -20,8 +20,9 @@
   "keywords": [
     "agape",
     "util",
-    "i18n",
-    "internationalization"
+    "pick",
+    "omit",
+    "object"
   ],
   "es2020": "./es2020/index.js",
   "exports": {
