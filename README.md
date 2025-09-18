@@ -4,20 +4,20 @@ Essential utility functions for object manipulation and data validation.
 
 ## ✨ Functions
 
-### `isEmpty(value)`
-Checks if a value is considered empty (undefined, null, or empty string).
+### `pick(instance, keys)`
+Creates a new object by picking only the specified properties from the original object.
 
 ### `omit(instance, keys)`
 Creates a new object by omitting specified properties from the original object.
-
-### `pick(instance, keys)`
-Creates a new object by picking only the specified properties from the original object.
 
 ### `properties(instance)`
 Returns an array of property names that are not functions or methods.
 
 ### `methods(instance)`
 Returns an array of property names that are functions or methods.
+
+### `isEmpty(value)`
+Checks if a value is considered empty (undefined, null, or empty string).
 
 ---
 
