@@ -1,0 +1,39 @@
+{
+  "name": "@agape/util",
+  "version": "0.1.0",
+  "description": "util management utilities with global state",
+  "main": "./cjs/index.js",
+  "module": "./es2020/index.js",
+  "author": {
+    "name": "Maverik Minett",
+    "email": "maverik.minett@gmail.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://agape.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AgapeToolkit/AgapeToolkit"
+  },
+  "keywords": [
+    "agape",
+    "util",
+    "i18n",
+    "internationalization"
+  ],
+  "es2020": "./es2020/index.js",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "es2020": "./es2020/index.js",
+      "node": "./cjs/index.js",
+      "default": "./es2020/index.js",
+      "require": "./cjs/index.js",
+      "import": "./es2020/index.js"
+    }
+  }
+}

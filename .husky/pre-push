@@ -1,0 +1,2 @@
+npx nx lint util
+npx nx test util --no-watch --ci
