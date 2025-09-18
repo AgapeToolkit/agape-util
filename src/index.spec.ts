@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isEmpty, omit, pick, properties, methods } from './index';
 
 describe('isEmpty', () => {
