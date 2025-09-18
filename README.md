@@ -1,2 +1,0 @@
-# agape-util
-Utilities collection
