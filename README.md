@@ -19,9 +19,6 @@ Returns an array of property names that are functions or methods.
 ### `isEmpty(value)`
 Checks if a value is considered empty (undefined, null, or empty string).
 
-### `isClassOrSubclassOf(childClass, parentClass)`
-Checks if one class is the same as or a subclass of another class.
-
 ---
 
 ## 🚀 Examples
@@ -81,26 +78,6 @@ const dataOnly = omit(employee, ['id', ...methods(employee)]);
 // Pick only data properties
 const cleanData = pick(employee, properties(employee));
 // Result: { id: 1, name: 'John', department: 'Engineering' }
-```
-
-### Class Inheritance Checking
-
-```ts
-import { isClassOrSubclassOf } from '@agape/util';
-
-class Animal {}
-class Dog extends Animal {}
-class Cat extends Animal {}
-class Vehicle {}
-class Car extends Vehicle {}
-class SportsCar extends Car {}
-
-// Check class relationships
-isClassOrSubclassOf(Dog, Animal); // true
-isClassOrSubclassOf(Cat, Animal); // true
-isClassOrSubclassOf(Animal, Animal); // true (same class)
-isClassOrSubclassOf(Animal, Dog); // false
-isClassOrSubclassOf(SportsCar, Vehicle); // true (indirect inheritance)
 ```
 ---
 
