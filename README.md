@@ -16,8 +16,25 @@ Returns an array of property names that are not functions or methods.
 ### `methods(instance)`
 Returns an array of property names that are functions or methods.
 
-### `isEmpty(value)`
-Checks if a value is considered empty (undefined, null, or empty string).
+### `isPresent(value)`
+Checks if a value is present (not empty) and provides TypeScript type narrowing.
+
+A value is considered present if it is NOT:
+- `undefined`
+- `null` 
+- An empty string `''`
+
+**TypeScript Benefits:** This function acts as a type guard, allowing TypeScript to narrow types in conditional statements.
+
+```ts
+function processValue(value: number | undefined) {
+  if (isPresent(value)) {
+    // TypeScript knows value is definitely a number here
+    return value + 1; // ✅ No type errors
+  }
+  // TypeScript knows value is undefined here
+}
+```
 
 ---
 
@@ -26,7 +43,7 @@ Checks if a value is considered empty (undefined, null, or empty string).
 ### Basic Object Manipulation
 
 ```ts
-import { isEmpty, omit, pick } from '@agape/util';
+import { isPresent, omit, pick } from '@agape/util';
 
 const user = { 
   id: 1, 
@@ -35,10 +52,22 @@ const user = {
   password: 'secret' 
 };
 
-// Check if value is empty
-isEmpty(undefined); // true
-isEmpty(''); // true
-isEmpty('hello'); // false
+// Check if value is present
+isPresent(undefined); // false
+isPresent(null); // false
+isPresent(''); // false
+isPresent('hello'); // true
+isPresent(0); // true
+isPresent(false); // true
+
+// TypeScript type narrowing example
+function getEra(year: number | undefined): number | undefined {
+  if (isPresent(year)) {
+    // TypeScript knows year is definitely a number here
+    return year > 0 ? 1 : 0;
+  }
+  return year; // TypeScript knows year is undefined here
+}
 
 // Omit properties
 const publicUser = omit(user, ['password']);
