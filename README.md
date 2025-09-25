@@ -16,11 +16,25 @@ Returns an array of property names that are not functions or methods.
 ### `methods(instance)`
 Returns an array of property names that are functions or methods.
 
-### `isEmpty(value)`
-Checks if a value is considered empty (undefined, null, or empty string).
+### `isPresent(value)`
+Checks if a value is present (not empty) and provides TypeScript type narrowing.
 
-### `isClassOrSubclassOf(childClass, parentClass)`
-Checks if one class is the same as or a subclass of another class.
+A value is considered present if it is NOT:
+- `undefined`
+- `null` 
+- An empty string `''`
+
+**TypeScript Benefits:** This function acts as a type guard, allowing TypeScript to narrow types in conditional statements.
+
+```ts
+function processValue(value: number | undefined) {
+  if (isPresent(value)) {
+    // TypeScript knows value is definitely a number here
+    return value + 1; // ✅ No type errors
+  }
+  // TypeScript knows value is undefined here
+}
+```
 
 ---
 
@@ -29,7 +43,7 @@ Checks if one class is the same as or a subclass of another class.
 ### Basic Object Manipulation
 
 ```ts
-import { isEmpty, omit, pick } from '@agape/util';
+import { isPresent, omit, pick } from '@agape/util';
 
 const user = { 
   id: 1, 
@@ -38,10 +52,22 @@ const user = {
   password: 'secret' 
 };
 
-// Check if value is empty
-isEmpty(undefined); // true
-isEmpty(''); // true
-isEmpty('hello'); // false
+// Check if value is present
+isPresent(undefined); // false
+isPresent(null); // false
+isPresent(''); // false
+isPresent('hello'); // true
+isPresent(0); // true
+isPresent(false); // true
+
+// TypeScript type narrowing example
+function getEra(year: number | undefined): number | undefined {
+  if (isPresent(year)) {
+    // TypeScript knows year is definitely a number here
+    return year > 0 ? 1 : 0;
+  }
+  return year; // TypeScript knows year is undefined here
+}
 
 // Omit properties
 const publicUser = omit(user, ['password']);
@@ -81,26 +107,6 @@ const dataOnly = omit(employee, ['id', ...methods(employee)]);
 // Pick only data properties
 const cleanData = pick(employee, properties(employee));
 // Result: { id: 1, name: 'John', department: 'Engineering' }
-```
-
-### Class Inheritance Checking
-
-```ts
-import { isClassOrSubclassOf } from '@agape/util';
-
-class Animal {}
-class Dog extends Animal {}
-class Cat extends Animal {}
-class Vehicle {}
-class Car extends Vehicle {}
-class SportsCar extends Car {}
-
-// Check class relationships
-isClassOrSubclassOf(Dog, Animal); // true
-isClassOrSubclassOf(Cat, Animal); // true
-isClassOrSubclassOf(Animal, Animal); // true (same class)
-isClassOrSubclassOf(Animal, Dog); // false
-isClassOrSubclassOf(SportsCar, Vehicle); // true (indirect inheritance)
 ```
 ---
 
