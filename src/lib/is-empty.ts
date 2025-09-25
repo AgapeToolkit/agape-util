@@ -20,6 +20,6 @@
  * isEmpty([]); // false
  * ```
  */
-export function isEmpty(value: any) {
+export function isEmpty<T>(value: T | null | undefined): value is Extract<T, ''> | null | undefined {
   return value === undefined || value === null || value === '';
 }
