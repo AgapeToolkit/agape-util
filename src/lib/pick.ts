@@ -29,20 +29,6 @@
  * const publicInfo = pick(user, ['id', 'name', 'email']);
  * // Result: { id: 1, name: 'John', email: 'john@example.com' }
  * ```
- *
- * @example
- * ### Pick all properties
- * ```ts
- * const employee = {
- *   id: 1,
- *   name: 'John',
- *   getFullName() { return this.name; },
- *   calculateSalary() { return 50000; }
- * };
- *
- * const dataOnly = pick(employee, properties(employee)]);
- * // Result: { id: 1, name: 'John' }
- * ```
  */
 export function pick<T extends object, K extends keyof T>(instance: T, keys: K[]): Pick<T, K> {
   const output: any = {};

@@ -11,10 +11,7 @@ Creates a new object by picking only the specified properties from the original 
 Creates a new object by omitting specified properties from the original object.
 
 ### `properties(instance)`
-Returns an array of property names that are not functions or methods.
-
-### `methods(instance)`
-Returns an array of property names that are functions or methods.
+Creates a new object containing only the non-function properties from the original object.
 
 ### `isPresent(value)`
 Checks if a value is present (not empty) and provides TypeScript type narrowing.
@@ -23,8 +20,6 @@ A value is considered present if it is NOT:
 - `undefined`
 - `null` 
 - An empty string `''`
-
-**TypeScript Benefits:** This function acts as a type guard, allowing TypeScript to narrow types in conditional statements.
 
 ```ts
 function processValue(value: number | undefined) {
@@ -40,73 +35,64 @@ function processValue(value: number | undefined) {
 
 ## 🚀 Examples
 
-### Basic Object Manipulation
+### `pick(instance, keys)`
 
 ```ts
-import { isPresent, omit, pick } from '@agape/util';
+import { pick } from '@agape/util';
 
-const user = { 
-  id: 1, 
-  name: 'John', 
-  email: 'john@example.com', 
-  password: 'secret' 
-};
+const user = { id: 1, name: 'John', email: 'john@example.com' };
 
-// Check if value is present
-isPresent(undefined); // false
-isPresent(null); // false
-isPresent(''); // false
-isPresent('hello'); // true
-isPresent(0); // true
-isPresent(false); // true
-
-// TypeScript type narrowing example
-function getEra(year: number | undefined): number | undefined {
-  if (isPresent(year)) {
-    // TypeScript knows year is definitely a number here
-    return year > 0 ? 1 : 0;
-  }
-  return year; // TypeScript knows year is undefined here
-}
-
-// Omit properties
-const publicUser = omit(user, ['password']);
-// Result: { id: 1, name: 'John', email: 'john@example.com' }
-
-// Pick specific properties
-const basicInfo = pick(user, ['id', 'name']);
+pick(user, ['id', 'name']);
 // Result: { id: 1, name: 'John' }
 ```
 
-### Working with Methods and Data
+### `omit(instance, keys)`
 
 ```ts
-import { omit, pick, properties, methods } from '@agape/util';
+import { omit } from '@agape/util';
+
+const user = { id: 1, name: 'John', email: 'john@example.com', password: 'secret' };
+
+omit(user, ['password']);
+// Result: { id: 1, name: 'John', email: 'john@example.com' }
+```
+
+### `properties(instance)`
+
+```ts
+import { properties } from '@agape/util';
 
 const employee = {
   id: 1,
   name: 'John',
-  department: 'Engineering',
-  getFullName() { return this.name; },
-  calculateSalary() { return 50000; },
-  getDepartment() { return this.department; }
+  getFullName() { return this.name; }
 };
 
-// Get only data properties
-const dataProps = properties(employee);
-// Result: ['id', 'name', 'department']
+properties(employee);
+// Result: { id: 1, name: 'John' }
+```
 
-// Get only methods
-const methodProps = methods(employee);
-// Result: ['getFullName', 'calculateSalary', 'getDepartment']
+### `isPresent(value)`
 
-// Omit all methods and ids to get data-only object
-const dataOnly = omit(employee, ['id', ...methods(employee)]);
-// Result: { id: 1, name: 'John', department: 'Engineering' }
+```ts
+import { isPresent } from '@agape/util';
 
-// Pick only data properties
-const cleanData = pick(employee, properties(employee));
-// Result: { id: 1, name: 'John', department: 'Engineering' }
+isPresent('hello'); // true
+isPresent(''); // false
+isPresent(null); // false
+isPresent(undefined); // false
+```
+
+This function acts as a type guard, allowing TypeScript to narrow types in conditional statements.
+
+```ts
+function processValue(value: number | undefined) {
+  if (isPresent(value)) {
+    // TypeScript knows value is definitely a number here
+    return value + 1; // ✅ No type errors
+  }
+  // TypeScript knows value is undefined here
+}
 ```
 ---
 

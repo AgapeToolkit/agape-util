@@ -1,6 +1,6 @@
 {
   "name": "@agape/util",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "util management utilities with global state",
   "main": "./cjs/index.js",
   "module": "./es2020/index.js",
@@ -25,6 +25,9 @@
     "omit",
     "object"
   ],
+  "dependencies": {
+    "@agape/types": "^2.0.2"
+  },
   "es2020": "./es2020/index.js",
   "exports": {
     "./package.json": {
