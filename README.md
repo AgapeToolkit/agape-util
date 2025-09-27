@@ -21,16 +21,6 @@ A value is considered present if it is NOT:
 - `null` 
 - An empty string `''`
 
-```ts
-function processValue(value: number | undefined) {
-  if (isPresent(value)) {
-    // TypeScript knows value is definitely a number here
-    return value + 1; // ✅ No type errors
-  }
-  // TypeScript knows value is undefined here
-}
-```
-
 ---
 
 ## 🚀 Examples
