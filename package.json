@@ -1,6 +1,6 @@
 {
   "name": "@agape/util",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "util management utilities with global state",
   "main": "./cjs/index.js",
   "module": "./es2020/index.js",
