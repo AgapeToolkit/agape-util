@@ -29,33 +29,6 @@
  * const basicUser = omit(user, ['password', 'email']);
  * // Result: { id: 1, name: 'John' }
  * ```
- * @example
- * ### Omit all methods from an object
- * ```ts
- * const employee = {
- *   id: 1,
- *   name: 'John',
- *   getFullName() { return this.name; },
- *   calculateSalary() { return 50000; }
- * };
- *
- * const dataOnly = omit(employee, methods(employee));
- * // Result: { id: 1, name: 'John' }
- * ```
- *
- * @example
- * ### Omit primary key and methods
- * ```ts
- * const employee = {
- *   id: 1,
- *   name: 'John',
- *   getFullName() { return this.name; },
- *   calculateSalary() { return 50000; }
- * };
- *
- * const dataOnly = omit(employee, ['id', ...methods(employee)]);
- * // Result: { name: 'John' }
- * ```
  */
 export function omit<T extends object, K extends keyof T>(instance: T, keys: K[]): Omit<T, K> {
   // Create Set for O(1) lookups when checking against all object properties

@@ -1,12 +1,14 @@
+import { Properties } from '@agape/types';
+
 /**
- * Returns an array of property names that are not functions or methods.
+ * Creates a new object containing only the non-function properties from the original object.
  *
  * This function iterates through all enumerable properties of an object
- * and returns only those that are not functions.
+ * and returns a new object containing only those that are not functions.
  *
  * @template T - The type of the input object
- * @param instance - The object to extract property names from
- * @returns An array of property names that are not functions
+ * @param object - The object to extract properties from
+ * @returns A new object containing only non-function properties
  *
  * @example
  * ```typescript
@@ -18,17 +20,17 @@
  * };
  *
  * const dataProps = properties(employee);
- * // Result: ['id', 'name']
+ * // Result: { id: 1, name: 'John' }
  * ```
  */
-export function properties<T extends object>(instance: T): (keyof T)[] {
-  const result: (keyof T)[] = [];
+export function properties<T extends object>(object: T): Properties<T> {
+  const result: Record<string, unknown> = {};
 
-  for (const key in instance) {
-    if (typeof instance[key] !== 'function') {
-      result.push(key);
+  for (const key in object) {
+    if (typeof object[key] !== 'function') {
+      result[key] = object[key];
     }
   }
 
-  return result;
+  return result as Properties<T>;
 }

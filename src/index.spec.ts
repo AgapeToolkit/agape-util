@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { omit, pick, properties, methods } from './index';
+import { omit, pick, properties } from './index';
 
 describe('TypeScript type safety', () => {
   interface User {
@@ -57,8 +57,8 @@ describe('Integration with omit and pick', () => {
     getDepartment() { return this.department; }
   };
 
-  it('should omit all methods using methods() function', () => {
-    const dataOnly = omit(employee, methods(employee));
+  it('should get only data properties using properties() function', () => {
+    const dataOnly = properties(employee);
     expect(dataOnly).toEqual({
       id: 1,
       name: 'John',
@@ -66,27 +66,20 @@ describe('Integration with omit and pick', () => {
     });
   });
 
-  it('should pick only data properties using properties() function', () => {
-    const dataOnly = pick(employee, properties(employee));
-    expect(dataOnly).toEqual({
-      id: 1,
+  it('should omit specific properties', () => {
+    const result = omit(employee, ['id']);
+    expect(result).toEqual({
       name: 'John',
-      department: 'Engineering'
+      department: 'Engineering',
+      getFullName: employee.getFullName,
+      calculateSalary: employee.calculateSalary,
+      getDepartment: employee.getDepartment
     });
   });
 
-  it('should combine specific keys with methods()', () => {
-    const result = omit(employee, ['id', ...methods(employee)]);
+  it('should pick specific properties', () => {
+    const result = pick(employee, ['name', 'department']);
     expect(result).toEqual({
-      name: 'John',
-      department: 'Engineering'
-    });
-  });
-
-  it('should combine specific keys with properties()', () => {
-    const result = pick(employee, ['name', ...properties(employee)]);
-    expect(result).toEqual({
-      id: 1,
       name: 'John',
       department: 'Engineering'
     });
